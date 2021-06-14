@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
 data class TokenEntity (
     @SerializedName("id")
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int = 0,
 
     @SerializedName("token")
     val token: String,

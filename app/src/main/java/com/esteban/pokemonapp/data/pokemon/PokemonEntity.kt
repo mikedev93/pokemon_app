@@ -1,7 +1,6 @@
 package com.esteban.pokemonapp.data.pokemon
 
 import android.os.Parcelable
-import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -23,5 +22,8 @@ data class PokemonEntity(
     val sprites: Sprites,
 
     @SerializedName("moves")
-    val moves: List<Move>
+    val moves: List<Move>,
+
+    @SerializedName("types")
+    val types: List<PokemonType>
 ): Parcelable

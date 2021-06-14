@@ -29,9 +29,9 @@ data class MyTeamEntity (
 
     @SerializedName("captured_lat_at")
     @ColumnInfo(name = "captured_lat_at")
-    val capturedLatitudeAt: String,
+    val capturedLatitudeAt: Double,
 
     @SerializedName("captured_long_at")
     @ColumnInfo(name = "captured_long_at")
-    val capturedLongitudeAt: String
+    val capturedLongitudeAt: Double
 ): Parcelable

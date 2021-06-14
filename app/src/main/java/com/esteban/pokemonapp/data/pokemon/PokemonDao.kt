@@ -18,5 +18,5 @@ interface PokemonDao {
     suspend fun deleteAllPokemons()
 
     @Query("SELECT * FROM pokemon_table")
-    fun getAllPokemons(): List<PokemonEntity>
+    suspend fun getAllPokemons(): List<PokemonEntity>
 }

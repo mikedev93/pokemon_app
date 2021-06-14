@@ -10,6 +10,7 @@ import com.esteban.pokemonapp.data.pokemon.PokemonDao
 import com.esteban.pokemonapp.data.pokemon.PokemonEntity
 import com.esteban.pokemonapp.data.team.MyTeamDao
 import com.esteban.pokemonapp.data.team.MyTeamEntity
+import com.esteban.pokemonapp.data.token.TokenDao
 import com.esteban.pokemonapp.data.token.TokenEntity
 
 @Database(entities = [MyTeamEntity::class, PokemonEntity::class, TokenEntity::class], version = 1, exportSchema = false)
@@ -18,6 +19,7 @@ abstract class PokemonDatabase : RoomDatabase() {
 
     abstract fun pokemonDao(): PokemonDao
     abstract fun myTeamDao(): MyTeamDao
+    abstract fun tokenDao(): TokenDao
 
     companion object {
         private const val dbName = "pokemon_database"
@@ -31,7 +33,7 @@ abstract class PokemonDatabase : RoomDatabase() {
                     context.applicationContext,
                     PokemonDatabase::class.java,
                     dbName)
-                    .addTypeConverter(CustomTypeConverters::class)
+//                    .addTypeConverter(CustomTypeConverters::class)
                     .build()
                 INSTANCE = instance
                 return instance

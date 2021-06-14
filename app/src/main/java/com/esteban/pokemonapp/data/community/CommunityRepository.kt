@@ -1,4 +1,10 @@
 package com.esteban.pokemonapp.data.community
 
-class CommunityRepository {
+import android.app.Application
+
+class CommunityRepository(application: Application) {
+
+    suspend fun getCommunityFromServer() {
+
+    }
 }
