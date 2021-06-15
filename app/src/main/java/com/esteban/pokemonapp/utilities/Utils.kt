@@ -1,6 +1,9 @@
 package com.esteban.pokemonapp.utilities
 
+import android.util.Log
 import com.esteban.pokemonapp.data.token.TokenEntity
+import java.text.SimpleDateFormat
+import java.util.*
 
 object Utils {
 
@@ -8,5 +11,41 @@ object Utils {
         return if (tokenEntity == null) {
             true
         } else System.currentTimeMillis() > tokenEntity.expiresAt
+    }
+
+    fun formatTimeAgo(date1: String): String {
+        var conversionTime = ""
+        try {
+            val format = "yyyy-MM-dd'T'HH:mm:ssZ"
+
+            val dateFormatter = SimpleDateFormat(format, Locale.getDefault())
+
+            val datetime = Calendar.getInstance()
+            var date2 = dateFormatter.format(datetime.time).toString()
+
+            val dateObj1 = dateFormatter.parse(date1)
+            val dateObj2 = dateFormatter.parse(date2)
+            val diff = dateObj2.time - dateObj1.time
+
+            val diffDays = diff / (24 * 60 * 60 * 1000)
+            val diffHours = diff / (60 * 60 * 1000)
+            val diffMin = diff / (60 * 1000)
+            val diffSec = diff / 1000
+            if (diffDays > 1) {
+                conversionTime += "$diffDays days "
+            } else if (diffHours > 1) {
+                conversionTime += (diffHours - diffDays * 24).toString() + " hours "
+            } else if (diffMin > 1) {
+                conversionTime += (diffMin - diffHours * 60).toString() + " min "
+            } else if (diffSec > 1) {
+                conversionTime += (diffSec - diffMin * 60).toString() + " sec "
+            }
+        } catch (ex: java.lang.Exception) {
+            Log.e("formatTimeAgo", ex.toString())
+        }
+        if (conversionTime != "") {
+            conversionTime += "ago"
+        }
+        return conversionTime
     }
 }

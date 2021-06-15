@@ -5,8 +5,11 @@ import androidx.room.*
 @Dao
 interface PokemonDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNewPokemon(pokemon: PokemonEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertNewPokemonList(pokemon: List<PokemonEntity>)
 
     @Update
     suspend fun updatePokemon(pokemon: PokemonEntity)
@@ -18,5 +21,5 @@ interface PokemonDao {
     suspend fun deleteAllPokemons()
 
     @Query("SELECT * FROM pokemon_table")
-    suspend fun getAllPokemons(): List<PokemonEntity>
+    fun getAllPokemons(): List<PokemonEntity>
 }

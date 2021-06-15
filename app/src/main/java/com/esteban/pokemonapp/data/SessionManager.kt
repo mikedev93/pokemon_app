@@ -6,5 +6,9 @@ class SessionManager {
 
     companion object {
         var tokenEntity: TokenEntity? = null
+
+        fun clearData() {
+            tokenEntity = null
+        }
     }
 }

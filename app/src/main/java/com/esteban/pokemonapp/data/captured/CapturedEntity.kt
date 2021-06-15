@@ -1,4 +1,4 @@
-package com.esteban.pokemonapp.data.team
+package com.esteban.pokemonapp.data.captured
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
@@ -8,20 +8,14 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-@Entity(tableName = "my_team_table")
-data class MyTeamEntity (
-    @SerializedName("local_id")
-    @ColumnInfo(name = "local_id")
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
-
+@Entity(tableName = "captured_table")
+data class CapturedEntity (
     @SerializedName("id")
-    @ColumnInfo(name = "id")
-    val pokemonId: Int,
+    @PrimaryKey(autoGenerate = false)
+    val id: Int,
 
     @SerializedName("name")
-    @ColumnInfo(name = "name")
-    val chosenName: String,
+    val name: String,
 
     @SerializedName("captured_at")
     @ColumnInfo(name = "captured_at")

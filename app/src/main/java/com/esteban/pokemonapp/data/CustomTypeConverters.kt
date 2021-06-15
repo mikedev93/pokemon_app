@@ -1,7 +1,9 @@
-package com.esteban.pokemonapp.data.pokemon
+package com.esteban.pokemonapp.data
 
-import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
+import com.esteban.pokemonapp.data.pokemon.Move
+import com.esteban.pokemonapp.data.pokemon.NestedType
+import com.esteban.pokemonapp.data.pokemon.PokemonType
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type

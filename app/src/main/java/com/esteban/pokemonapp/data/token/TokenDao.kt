@@ -9,7 +9,7 @@ import androidx.room.Query
 @Dao
 interface TokenDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNewToken(token: TokenEntity)
 
     @Query("DELETE FROM token_table")

@@ -11,7 +11,7 @@ import kotlinx.android.parcel.Parcelize
 @Entity(tableName = "pokemon_table")
 data class PokemonEntity(
     @SerializedName("id")
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     val id: Int,
 
     @SerializedName("name")
@@ -19,11 +19,11 @@ data class PokemonEntity(
 
     @SerializedName("sprites")
     @Embedded
-    val sprites: Sprites,
+    val sprites: Sprites?,
 
     @SerializedName("moves")
-    val moves: List<Move>,
+    val moves: List<Move>?,
 
     @SerializedName("types")
-    val types: List<PokemonType>
+    val types: List<PokemonType>?
 ): Parcelable
