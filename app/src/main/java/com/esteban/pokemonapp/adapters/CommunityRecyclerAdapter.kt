@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -34,7 +35,7 @@ class CommunityRecyclerAdapter(
         fun bindViewHolder(context: Context, item: Community, clickListener: CommunityOnClickListener) {
             trainer.text = item.name
             pokemonName.text = "${item.pokemon.name} ${Utils.formatTimeAgo(item.pokemon.capturedAt)}"
-            itemView.setOnClickListener { clickListener.onItemClick(item) }
+            itemView.setOnClickListener { clickListener.onItemClick(item, pokemonImage) }
             if (item.pokemon.pokemonDetails != null && item.pokemon.pokemonDetails?.sprites?.frontDefault != null) {
                 Glide.with(context)
                     .load(item.pokemon.pokemonDetails?.sprites?.frontDefault)
@@ -91,6 +92,6 @@ class CommunityRecyclerAdapter(
     }
 
     interface CommunityOnClickListener {
-        fun onItemClick(item: Community)
+        fun onItemClick(item: Community, imageView: ImageView)
     }
 }

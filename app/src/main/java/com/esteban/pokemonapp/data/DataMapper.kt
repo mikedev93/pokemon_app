@@ -5,6 +5,8 @@ import com.esteban.pokemonapp.data.model.CapturedResponse
 import com.esteban.pokemonapp.data.model.MyTeamResponse
 import com.esteban.pokemonapp.data.model.PokemonResponse
 import com.esteban.pokemonapp.data.model.TokenResponse
+import com.esteban.pokemonapp.data.pokemon.Move
+import com.esteban.pokemonapp.data.pokemon.PokemonCommon
 import com.esteban.pokemonapp.data.pokemon.PokemonEntity
 import com.esteban.pokemonapp.data.team.MyTeamEntity
 import com.esteban.pokemonapp.data.token.TokenEntity
@@ -70,7 +72,36 @@ class DataMapper {
         }
 
         fun pokemonResponseToEntity(response: PokemonResponse): PokemonEntity {
-            return PokemonEntity(response.id, response.name, response.sprites, Utils.getRandomMoves(response.moves), response.types)
+            response.moves = Utils.getRandomMoves(response.moves)
+            return PokemonEntity(
+                response.id,
+                response.name,
+                response.sprites,
+                response.moves,
+                response.types
+            )
+        }
+
+        fun myTeamEntityToPokemonCommon(myTeamEntity: MyTeamEntity): PokemonCommon {
+            return PokemonCommon(
+                myTeamEntity.pokemonId,
+                myTeamEntity.chosenName,
+                myTeamEntity.capturedAt,
+                myTeamEntity.capturedLatitudeAt,
+                myTeamEntity.capturedLongitudeAt,
+                myTeamEntity.pokemonDetails
+            )
+        }
+
+        fun capturedEntityToPokemonCommon(capturedEntity: CapturedEntity): PokemonCommon {
+            return PokemonCommon(
+                capturedEntity.id,
+                capturedEntity.name,
+                capturedEntity.capturedAt,
+                capturedEntity.capturedLatitudeAt,
+                capturedEntity.capturedLongitudeAt,
+                capturedEntity.pokemonDetails
+            )
         }
     }
 }

@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -30,7 +31,7 @@ class CapturedRecyclerAdapter(
         val avatar = itemView.capturedAvatar
 
         fun bindViewHolder(context: Context, item: CapturedEntity, clickListener: CapturedOnClickListener) {
-            itemView.setOnClickListener { clickListener.onItemClick(item) }
+            itemView.setOnClickListener { clickListener.onItemClick(item, avatar) }
             if (item.pokemonDetails != null && item.pokemonDetails?.sprites?.frontDefault != null) {
                 Glide.with(context)
                     .load(item.pokemonDetails?.sprites?.frontDefault)
@@ -86,6 +87,6 @@ class CapturedRecyclerAdapter(
     }
 
     interface CapturedOnClickListener {
-        fun onItemClick(item: CapturedEntity)
+        fun onItemClick(item: CapturedEntity, imageView: ImageView)
     }
 }

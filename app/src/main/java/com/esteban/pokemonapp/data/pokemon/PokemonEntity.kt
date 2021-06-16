@@ -27,5 +27,5 @@ data class PokemonEntity(
     val moves: List<Move>?,
 
     @SerializedName("types")
-    val types: List<PokemonType>?
+    val typeSlots: List<TypeSlot>?
 ): Parcelable

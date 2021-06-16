@@ -5,19 +5,18 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-class PokemonType (
-
+class TypeSlot (
     @SerializedName("slot")
     val slot: Int,
 
     @SerializedName("type")
-    val type: NestedType
+    val nestedType: NestedType
 ) : Parcelable
 
 @Parcelize
 class NestedType (
 
-    @SerializedName("type")
+    @SerializedName("name")
     val name: String,
 
     @SerializedName("url")

@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -39,7 +40,7 @@ class MyTeamRecyclerAdapter(
             name.text = item.chosenName
             hp.text = "100/100"
             capturedAt.text = Utils.formatToReadableDate(item.capturedAt)
-            itemView.setOnClickListener { clickListener.onItemClick(item) }
+            itemView.setOnClickListener { clickListener.onItemClick(item,avatar) }
             if (item.pokemonDetails != null) {
                 if (item.pokemonDetails?.sprites?.frontDefault != null) {
                     Glide.with(context)
@@ -74,7 +75,10 @@ class MyTeamRecyclerAdapter(
                         .centerCrop()
                         .into(avatar)
                 }
-                type.text = item.pokemonDetails?.types?.get(0)?.type?.name
+                var typeSlots = item.pokemonDetails?.typeSlots
+                if (!typeSlots.isNullOrEmpty()) {
+                    type.text = item.pokemonDetails?.typeSlots?.first()?.nestedType?.name
+                }
             }
         }
     }
@@ -109,6 +113,6 @@ class MyTeamRecyclerAdapter(
     }
 
     interface OnMyTeamClickListener {
-        fun onItemClick(item: MyTeamEntity)
+        fun onItemClick(item: MyTeamEntity, imageView: ImageView)
     }
 }

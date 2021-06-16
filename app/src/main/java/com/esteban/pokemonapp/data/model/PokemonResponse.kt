@@ -2,7 +2,7 @@ package com.esteban.pokemonapp.data.model
 
 import android.os.Parcelable
 import com.esteban.pokemonapp.data.pokemon.Move
-import com.esteban.pokemonapp.data.pokemon.PokemonType
+import com.esteban.pokemonapp.data.pokemon.TypeSlot
 import com.esteban.pokemonapp.data.pokemon.Sprites
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
@@ -19,8 +19,8 @@ class PokemonResponse (
     val sprites: Sprites,
 
     @SerializedName("moves")
-    val moves: List<Move>,
+    var moves: List<Move>,
 
     @SerializedName("types")
-    val types: List<PokemonType>
+    val types: List<TypeSlot>
 ) : Parcelable

@@ -2,8 +2,7 @@ package com.esteban.pokemonapp.data
 
 import androidx.room.TypeConverter
 import com.esteban.pokemonapp.data.pokemon.Move
-import com.esteban.pokemonapp.data.pokemon.NestedType
-import com.esteban.pokemonapp.data.pokemon.PokemonType
+import com.esteban.pokemonapp.data.pokemon.TypeSlot
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
@@ -11,9 +10,8 @@ import java.lang.reflect.Type
 class CustomTypeConverters {
 
     private val typeMoves: Type = object : TypeToken<List<Move?>?>() {}.type
-    private val typeSprites: Type = object : TypeToken<List<Move?>?>() {}.type
-    private val typePokemonTypes: Type = object : TypeToken<List<PokemonType?>?>() {}.type
-    private val typePokemonNestedType: Type = object : TypeToken<List<NestedType?>?>() {}.type
+    private val typePokemonTypes: Type = object : TypeToken<List<TypeSlot?>?>() {}.type
+    private val typePokemonNestedType: Type = object : TypeToken<List<com.esteban.pokemonapp.data.pokemon.NestedType?>?>() {}.type
 
     @TypeConverter
     fun stringToMoves(json: String): List<Move> {
@@ -26,22 +24,22 @@ class CustomTypeConverters {
     }
 
     @TypeConverter
-    fun stringToPokemonTypes(json: String): List<PokemonType> {
+    fun stringToPokemonTypes(json: String): List<TypeSlot> {
         return Gson().fromJson(json, typePokemonTypes)
     }
 
     @TypeConverter
-    fun pokemonTypesToString(pokemonTypes: List<PokemonType>): String {
-        return Gson().toJson(pokemonTypes, typePokemonTypes)
+    fun pokemonTypesToString(typeSlots: List<TypeSlot>): String {
+        return Gson().toJson(typeSlots, typePokemonTypes)
     }
 
     @TypeConverter
-    fun stringToPokemonNestedType(json: String): List<NestedType> {
+    fun stringToPokemonNestedType(json: String): List<com.esteban.pokemonapp.data.pokemon.NestedType> {
         return Gson().fromJson(json, typePokemonNestedType)
     }
 
     @TypeConverter
-    fun pokemonNestedTypeToString(pokemonTypes: List<NestedType>): String {
-        return Gson().toJson(pokemonTypes, typePokemonNestedType)
+    fun pokemonNestedTypeToString(pokemonNestedTypes: List<com.esteban.pokemonapp.data.pokemon.NestedType>): String {
+        return Gson().toJson(pokemonNestedTypes, typePokemonNestedType)
     }
 }

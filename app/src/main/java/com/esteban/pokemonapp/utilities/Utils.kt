@@ -2,6 +2,7 @@ package com.esteban.pokemonapp.utilities
 
 import android.util.Log
 import com.esteban.pokemonapp.data.pokemon.Move
+import com.esteban.pokemonapp.data.pokemon.NestedMove
 import com.esteban.pokemonapp.data.token.TokenEntity
 import java.text.SimpleDateFormat
 import java.util.*
@@ -54,6 +55,7 @@ object Utils {
     fun formatToReadableDate(inputDate: String): String {
         var formattedDate = ""
         try {
+            //TODO: arreglar formateo
             //2021-05-09T06:32:17.842Z
             val formatInput = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
 
@@ -75,6 +77,16 @@ object Utils {
     }
 
     fun getRandomMoves(moves: List<Move>): List<Move> {
-        return moves.shuffled().take(4)
+        var randomMoves = moves.shuffled().take(4)
+        for (item in randomMoves){
+            item.nestedMove.level = getRandomMovesLevel()
+        }
+        return randomMoves
+    }
+
+    fun getRandomMovesLevel(): String {
+        val max = (1..20).random()
+        val total = (1..max).random()
+        return "$total/$max"
     }
 }
