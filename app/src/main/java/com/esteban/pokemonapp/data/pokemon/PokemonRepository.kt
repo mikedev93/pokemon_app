@@ -5,16 +5,21 @@ import androidx.lifecycle.LiveData
 import com.esteban.pokemonapp.data.PokemonDatabase
 import com.esteban.pokemonapp.data.model.PokemonResponse
 import com.esteban.pokemonapp.network.NetworkModule
+import io.reactivex.rxjava3.core.Observable
 
 class PokemonRepository(application: Application) {
 
     private val pokemonDao = PokemonDatabase.getDatabase(application).pokemonDao()
 
-    fun getPokemonFromServer(id: Int): PokemonResponse {
+    fun getPokemonFromServer(id: Int): Observable<PokemonResponse> {
         return NetworkModule().providePokemonAPIService()?.getPokemonById(id.toString())!!
     }
 
     fun getPokemonFromDB(id: Int): LiveData<PokemonEntity> {
         return pokemonDao.getSpecificPokemon(id)
+    }
+
+    suspend fun savePokemonToDB(pokemonEntity: PokemonEntity) {
+        pokemonDao.insertNewPokemon(pokemonEntity)
     }
 }

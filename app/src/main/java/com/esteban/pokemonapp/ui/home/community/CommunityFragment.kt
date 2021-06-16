@@ -10,13 +10,17 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.esteban.pokemonapp.R
 import com.esteban.pokemonapp.adapters.CommunityRecyclerAdapter
+import com.esteban.pokemonapp.data.DataMapper
 import com.esteban.pokemonapp.data.SessionManager
 import com.esteban.pokemonapp.data.community.Community
 import com.esteban.pokemonapp.data.model.CommunityResponse
+import com.esteban.pokemonapp.data.model.PokemonResponse
+import com.esteban.pokemonapp.data.pokemon.PokemonEntity
 import com.esteban.pokemonapp.data.token.TokenEntity
 import com.esteban.pokemonapp.utilities.Utils
 import com.esteban.pokemonapp.viewmodels.CommunityViewModel
@@ -66,7 +70,35 @@ class CommunityFragment : Fragment(), CommunityRecyclerAdapter.CommunityOnClickL
 
     private fun observeData() {
         viewModel.getCommunityActivity().observe(viewLifecycleOwner,
-            Observer<CommunityResponse> { it -> updateAdapter(it) })
+            Observer<CommunityResponse> { it ->
+                updateAdapter(it)
+                var allPokemons = ArrayList<Community>()
+                allPokemons.addAll(it.friends)
+                allPokemons.addAll(it.foes)
+                for (item in allPokemons){
+                    viewModel.getPokemonFromDB(item.pokemon.id).observe(viewLifecycleOwner,
+                        Observer<PokemonEntity> { pokemon ->
+                            if (pokemon == null) {
+                                lifecycleScope.launch {
+                                    Log.d(TAG, "No pokemon on DB: fetching new data")
+                                    viewModel.getPokemonFromServer(item.pokemon.id)
+                                }
+                            } else {
+                                Log.d(TAG, "Data found: loading data")
+                                adapterFriends.updatePokemonDetail(pokemon)
+                                adapterFoes.updatePokemonDetail(pokemon)
+                            }
+                        }
+                    )
+                }
+            })
+
+        viewModel.getPokemon().observe(viewLifecycleOwner,
+        Observer<PokemonResponse> {it ->
+            lifecycleScope.launch {
+                viewModel.savePokemonToDB(DataMapper.pokemonResponseToEntity(it))
+            }
+        })
     }
 
     private fun initRecyclerView(view: View) {

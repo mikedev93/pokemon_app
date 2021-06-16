@@ -13,7 +13,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.esteban.pokemonapp.R
 import com.esteban.pokemonapp.adapters.MyTeamRecyclerAdapter
+import com.esteban.pokemonapp.data.DataMapper
 import com.esteban.pokemonapp.data.SessionManager
+import com.esteban.pokemonapp.data.model.PokemonResponse
+import com.esteban.pokemonapp.data.pokemon.PokemonEntity
 import com.esteban.pokemonapp.data.team.MyTeamEntity
 import com.esteban.pokemonapp.data.token.TokenEntity
 import com.esteban.pokemonapp.utilities.Utils
@@ -60,6 +63,21 @@ class MyTeamFragment : Fragment(), MyTeamRecyclerAdapter.OnMyTeamClickListener {
                                 } else {
                                     Log.d(TAG, "Data found: loading data")
                                     updateAdapter(list)
+                                    for (item in list){
+                                        viewModel.getPokemonFromDB(item.pokemonId).observe(viewLifecycleOwner,
+                                            Observer<PokemonEntity> { pokemon ->
+                                                if (pokemon == null) {
+                                                    lifecycleScope.launch {
+                                                        Log.d(TAG, "No pokemon on DB: fetching new data")
+                                                        viewModel.getPokemonFromServer(item.pokemonId)
+                                                    }
+                                                } else {
+                                                    Log.d(TAG, "Data found: loading data")
+                                                    adapter.updatePokemonDetail(pokemon)
+                                                }
+                                            }
+                                        )
+                                    }
                                 }
                             })
                     }
@@ -81,6 +99,13 @@ class MyTeamFragment : Fragment(), MyTeamRecyclerAdapter.OnMyTeamClickListener {
                     lifecycleScope.launch {
                         viewModel.saveMyTeamList(list)
                     }
+                }
+            })
+
+        viewModel.getPokemon().observe(viewLifecycleOwner,
+            Observer<PokemonResponse> { it ->
+                lifecycleScope.launch {
+                    viewModel.savePokemonToDB(DataMapper.pokemonResponseToEntity(it))
                 }
             })
     }

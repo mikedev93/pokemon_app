@@ -44,7 +44,19 @@ class NetworkModule {
     @Provides
     @Singleton
     fun providePokemonAPIService(): PokemonAPIService? {
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+
+
+        val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+            .connectTimeout(20, TimeUnit.SECONDS)
+            .writeTimeout(20, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .addInterceptor(loggingInterceptor)
+            .build()
+
         return Retrofit.Builder()
+            .client(okHttpClient)
             .baseUrl(Constants.baseURLPokeAPI)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())

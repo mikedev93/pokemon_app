@@ -20,5 +20,5 @@ class CommunityPokemon (
 
     @Expose(serialize = false, deserialize = true)
     @SerializedName("pokemon_details")
-    var pokemonDetails: PokemonEntity
+    var pokemonDetails: PokemonEntity?
 ) : Parcelable

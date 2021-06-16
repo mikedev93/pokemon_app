@@ -1,9 +1,11 @@
 package com.esteban.pokemonapp.utilities
 
 import android.util.Log
+import com.esteban.pokemonapp.data.pokemon.Move
 import com.esteban.pokemonapp.data.token.TokenEntity
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 object Utils {
 
@@ -70,5 +72,9 @@ object Utils {
             formattedDate = inputDate
         }
         return formattedDate
+    }
+
+    fun getRandomMoves(moves: List<Move>): List<Move> {
+        return moves.shuffled().take(4)
     }
 }

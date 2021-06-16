@@ -3,9 +3,12 @@ package com.esteban.pokemonapp.data
 import com.esteban.pokemonapp.data.captured.CapturedEntity
 import com.esteban.pokemonapp.data.model.CapturedResponse
 import com.esteban.pokemonapp.data.model.MyTeamResponse
+import com.esteban.pokemonapp.data.model.PokemonResponse
 import com.esteban.pokemonapp.data.model.TokenResponse
+import com.esteban.pokemonapp.data.pokemon.PokemonEntity
 import com.esteban.pokemonapp.data.team.MyTeamEntity
 import com.esteban.pokemonapp.data.token.TokenEntity
+import com.esteban.pokemonapp.utilities.Utils
 
 class DataMapper {
 
@@ -29,7 +32,8 @@ class DataMapper {
                     chosenName = item.chosenName,
                     capturedAt = item.capturedAt,
                     capturedLatitudeAt = item.capturedLatitudeAt,
-                    capturedLongitudeAt = item.capturedLongitudeAt
+                    capturedLongitudeAt = item.capturedLongitudeAt,
+                    pokemonDetails = item.pokemonDetails
                 )
                 list.add(myTeam)
 
@@ -44,7 +48,8 @@ class DataMapper {
                 chosenName = response.chosenName,
                 capturedAt = response.capturedAt,
                 capturedLatitudeAt = response.capturedLatitudeAt,
-                capturedLongitudeAt = response.capturedLongitudeAt
+                capturedLongitudeAt = response.capturedLongitudeAt,
+                pokemonDetails = response.pokemonDetails
             )
             return myTeam
         }
@@ -57,10 +62,15 @@ class DataMapper {
                     name = item.chosenName,
                     capturedAt = item.capturedAt,
                     capturedLatitudeAt = item.capturedLatitudeAt,
-                    capturedLongitudeAt = item.capturedLongitudeAt
+                    capturedLongitudeAt = item.capturedLongitudeAt,
+                    pokemonDetails = item.pokemonDetails
                 )
             }
             return list
+        }
+
+        fun pokemonResponseToEntity(response: PokemonResponse): PokemonEntity {
+            return PokemonEntity(response.id, response.name, response.sprites, Utils.getRandomMoves(response.moves), response.types)
         }
     }
 }
