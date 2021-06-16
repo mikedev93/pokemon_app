@@ -21,7 +21,7 @@ class DataMapper {
             return TokenResponse(entity.token, entity.expiresAt)
         }
 
-        fun getLocalLocalMyTeamListModel(response: List<MyTeamResponse>): List<MyTeamEntity> {
+        fun getLocalMyTeamListModel(response: List<MyTeamResponse>): List<MyTeamEntity> {
             var list = ArrayList<MyTeamEntity>()
             for (item in response) {
                 var myTeam = MyTeamEntity(
@@ -53,7 +53,7 @@ class DataMapper {
             var list = ArrayList<CapturedEntity>()
             for (item in response.captured) {
                 var captured = CapturedEntity(
-                    id = item.id,
+                    id = item.pokemonId,
                     name = item.chosenName,
                     capturedAt = item.capturedAt,
                     capturedLatitudeAt = item.capturedLatitudeAt,

@@ -48,4 +48,27 @@ object Utils {
         }
         return conversionTime
     }
+
+    fun formatToReadableDate(inputDate: String): String {
+        var formattedDate = ""
+        try {
+            //2021-05-09T06:32:17.842Z
+            val formatInput = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+
+            //May 14th, 2011
+            val formatOutput = "MMM, d, ',' yyyy"
+
+            val dateFormatterInput = SimpleDateFormat(formatInput, Locale.getDefault())
+            val dateFormatterOutput = SimpleDateFormat(formatOutput, Locale.getDefault())
+            var date = dateFormatterInput.format(inputDate)
+
+            formattedDate = dateFormatterOutput.format(date).toString()
+
+
+        } catch (ex: java.lang.Exception) {
+            Log.e("formatToReadableDate", ex.toString())
+            formattedDate = inputDate
+        }
+        return formattedDate
+    }
 }

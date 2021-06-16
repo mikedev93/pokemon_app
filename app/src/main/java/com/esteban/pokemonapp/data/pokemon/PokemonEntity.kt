@@ -1,6 +1,7 @@
 package com.esteban.pokemonapp.data.pokemon
 
 import android.os.Parcelable
+import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -12,6 +13,7 @@ import kotlinx.android.parcel.Parcelize
 data class PokemonEntity(
     @SerializedName("id")
     @PrimaryKey(autoGenerate = false)
+    @ColumnInfo(name = "pokemon_id")
     val id: Int,
 
     @SerializedName("name")

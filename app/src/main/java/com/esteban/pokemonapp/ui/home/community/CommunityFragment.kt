@@ -26,7 +26,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CommunityFragment : Fragment(), CommunityRecyclerAdapter.OnCommunityClickListener {
+class CommunityFragment : Fragment(), CommunityRecyclerAdapter.CommunityOnClickListener {
 
     private val TAG = CommunityFragment::class.java.simpleName
     lateinit var viewModel: CommunityViewModel

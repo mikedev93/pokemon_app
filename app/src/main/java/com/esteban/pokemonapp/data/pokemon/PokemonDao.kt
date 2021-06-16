@@ -1,5 +1,6 @@
 package com.esteban.pokemonapp.data.pokemon
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
@@ -22,4 +23,7 @@ interface PokemonDao {
 
     @Query("SELECT * FROM pokemon_table")
     fun getAllPokemons(): List<PokemonEntity>
+
+    @Query("SELECT * FROM pokemon_table WHERE pokemon_id=:pokemonId")
+    fun getSpecificPokemon(pokemonId: Int): LiveData<PokemonEntity>
 }

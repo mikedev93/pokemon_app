@@ -1,35 +1,33 @@
 package com.esteban.pokemonapp.data.model
 
-import android.os.Parcelable
+import androidx.room.ColumnInfo
 import com.esteban.pokemonapp.data.pokemon.PokemonEntity
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
 
-@Parcelize
-class MyTeamResponse (
+class CapturedModel (
 
-    @Expose
     @SerializedName("id")
+    @ColumnInfo(name = "id")
     val pokemonId: Int,
 
-    @Expose
     @SerializedName("name")
+    @ColumnInfo(name = "name")
     val chosenName: String,
 
-    @Expose
     @SerializedName("captured_at")
+    @ColumnInfo(name = "captured_at")
     val capturedAt: String,
 
-    @Expose
     @SerializedName("captured_lat_at")
+    @ColumnInfo(name = "captured_lat_at")
     val capturedLatitudeAt: Double,
 
-    @Expose
     @SerializedName("captured_long_at")
+    @ColumnInfo(name = "captured_long_at")
     val capturedLongitudeAt: Double,
 
     @Expose(serialize = false, deserialize = true)
     @SerializedName("pokemon_details")
     var pokemonDetails: PokemonEntity
-) : Parcelable
+)

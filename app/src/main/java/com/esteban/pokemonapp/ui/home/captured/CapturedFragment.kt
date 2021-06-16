@@ -5,11 +5,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.esteban.pokemonapp.R
+import com.esteban.pokemonapp.adapters.CapturedRecyclerAdapter
 import com.esteban.pokemonapp.data.SessionManager
 import com.esteban.pokemonapp.data.captured.CapturedEntity
 import com.esteban.pokemonapp.data.team.MyTeamEntity
@@ -25,10 +28,11 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CapturedFragment : Fragment() {
+class CapturedFragment : Fragment(), CapturedRecyclerAdapter.CapturedOnClickListener {
 
     private val TAG = CapturedFragment::class.java.simpleName
     lateinit var viewModel: CapturedViewModel
+    lateinit var adapter: CapturedRecyclerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,7 +65,7 @@ class CapturedFragment : Fragment() {
                                     }
                                 } else {
                                     Log.d(TAG, "Data found: loading data")
-                                    view.tv_info.text = Gson().toJson(list)
+                                    updateAdapter(list)
                                 }
                             })
                     }
@@ -73,6 +77,7 @@ class CapturedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initRecyclerView(view)
         observeData()
     }
 
@@ -85,5 +90,21 @@ class CapturedFragment : Fragment() {
                     }
                 }
             })
+    }
+
+    fun initRecyclerView(view: View) {
+        var recyclerView = view.recyclerview_captured
+        recyclerView.setHasFixedSize(true)
+        adapter = CapturedRecyclerAdapter(view.context, ArrayList<CapturedEntity?>(), this)
+        recyclerView.layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
+        recyclerView.adapter = adapter
+    }
+
+    fun updateAdapter(list: List<CapturedEntity>) {
+        adapter.updateList(ArrayList(list))
+    }
+
+    override fun onItemClick(item: CapturedEntity) {
+        Toast.makeText(context, item.name, Toast.LENGTH_SHORT).show()
     }
 }

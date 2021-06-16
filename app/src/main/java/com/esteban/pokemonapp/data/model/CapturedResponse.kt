@@ -6,5 +6,5 @@ import com.google.gson.annotations.SerializedName
 class CapturedResponse (
 
     @SerializedName("captured")
-    val captured: List<MyTeamEntity>
+    val captured: List<CapturedModel>
 )

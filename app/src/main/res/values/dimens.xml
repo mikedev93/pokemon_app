@@ -1,3 +1,5 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="community_shadow_margin">6dp</dimen>
+    <dimen name="community_card_elevation">32dp</dimen>
 </resources>

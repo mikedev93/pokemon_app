@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.item_community.view.*
 class CommunityRecyclerAdapter(
     private var context: Context,
     private var communityList: ArrayList<Community?>,
-    private val clickListener: OnCommunityClickListener
+    private val clickListener: CommunityOnClickListener
 ) : RecyclerView.Adapter<CommunityRecyclerAdapter.CommunityViewHolder>() {
 
     class CommunityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -23,12 +23,11 @@ class CommunityRecyclerAdapter(
         val pokemonName = itemView.textview_pokemon_name
         val pokemonImage = itemView.imageView
 
-        fun bindViewHolder(context: Context, item: Community, clickListener: OnCommunityClickListener) {
-            if (item != null) {
-                trainer.text = item.name
-                pokemonName.text = "${item.pokemon.name} ${Utils.formatTimeAgo(item.pokemon.capturedAt)}"
-                itemView.setOnClickListener { clickListener.onItemClick(item) }
-            }
+        fun bindViewHolder(context: Context, item: Community, clickListener: CommunityOnClickListener) {
+            trainer.text = item.name
+            pokemonName.text = "${item.pokemon.name} ${Utils.formatTimeAgo(item.pokemon.capturedAt)}"
+            itemView.setOnClickListener { clickListener.onItemClick(item) }
+            pokemonImage
         }
     }
 
@@ -53,7 +52,7 @@ class CommunityRecyclerAdapter(
         this.communityList.addAll(newItems)
     }
 
-    interface OnCommunityClickListener {
+    interface CommunityOnClickListener {
         fun onItemClick(item: Community)
     }
 }

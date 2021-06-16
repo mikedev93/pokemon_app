@@ -6,7 +6,6 @@ import com.esteban.pokemonapp.data.PokemonDatabase
 import com.esteban.pokemonapp.data.SessionManager
 import com.esteban.pokemonapp.data.model.MyTeamResponse
 import com.esteban.pokemonapp.network.NetworkModule
-import com.esteban.pokemonapp.viewmodels.BaseViewModel
 import io.reactivex.rxjava3.core.Observable
 
 class MyTeamRepository(application: Application) {

@@ -21,7 +21,7 @@ class MyTeamViewModel(application: Application) : BaseViewModel(application) {
         myTeamRepository.getMyTeamFromServer()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { it -> myTeam.value = DataMapper.getLocalLocalMyTeamListModel(it) }
+            .subscribe { it -> myTeam.value = DataMapper.getLocalMyTeamListModel(it) }
     }
 
     fun getMyTeamFromDB():LiveData<List<MyTeamEntity>> {
