@@ -29,7 +29,7 @@
             android:elevation="@dimen/community_card_elevation"
             android:orientation="vertical"
             android:outlineProvider="bounds"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -152,6 +152,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/linear_captured_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -269,7 +270,7 @@
         android:text="Capture"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

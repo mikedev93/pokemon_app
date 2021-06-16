@@ -35,21 +35,6 @@ class CapturedRecyclerAdapter(
             if (item.pokemonDetails != null && item.pokemonDetails?.sprites?.frontDefault != null) {
                 Glide.with(context)
                     .load(item.pokemonDetails?.sprites?.frontDefault)
-                    .listener(object : RequestListener<Drawable> {
-                        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-//                            if (progressBar != null) {
-//                                progressBar.visibility = View.GONE
-//                            }
-                            return false
-                        }
-
-                        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-//                            if (progressBar != null) {
-//                                progressBar.visibility = View.GONE
-//                            }
-                            return false
-                        }
-                    })
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .centerCrop()
                     .into(avatar)

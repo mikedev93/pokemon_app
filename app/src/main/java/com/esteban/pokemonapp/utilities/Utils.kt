@@ -1,12 +1,12 @@
 package com.esteban.pokemonapp.utilities
 
+import android.location.Location
 import android.util.Log
 import com.esteban.pokemonapp.data.pokemon.Move
-import com.esteban.pokemonapp.data.pokemon.NestedMove
 import com.esteban.pokemonapp.data.token.TokenEntity
+import org.osmdroid.util.GeoPoint
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 object Utils {
 
@@ -55,11 +55,7 @@ object Utils {
     fun formatToReadableDate(inputDate: String): String {
         var formattedDate = ""
         try {
-            //TODO: arreglar formateo
-            //2021-05-09T06:32:17.842Z
             val formatInput = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-
-            //May 14th, 2011
             val formatOutput = "MMM, d, ',' yyyy"
 
             val dateFormatterInput = SimpleDateFormat(formatInput, Locale.getDefault())
@@ -88,5 +84,34 @@ object Utils {
         val max = (1..20).random()
         val total = (1..max).random()
         return "$total/$max"
+    }
+
+    fun getLocationInLatLngRad(radiusInMeters: Double, geoPoint: GeoPoint): GeoPoint? {
+        val x0: Double = geoPoint.getLongitude()
+        val y0: Double = geoPoint.getLatitude()
+        val random = Random()
+
+        // Convert radius from meters to degrees.
+        val radiusInDegrees = radiusInMeters / 111320f
+
+        // Get a random distance and a random angle.
+        val u = random.nextDouble()
+        val v = random.nextDouble()
+        val w = radiusInDegrees * Math.sqrt(u)
+        val t = 2 * Math.PI * v
+        // Get the x and y delta values.
+        val x = w * Math.cos(t)
+        val y = w * Math.sin(t)
+
+        // Compensate the x value.
+        val new_x = x / Math.cos(Math.toRadians(y0))
+        val foundLatitude: Double
+        val foundLongitude: Double
+        foundLatitude = y0 + y
+        foundLongitude = x0 + new_x
+        val copy = GeoPoint(foundLatitude, foundLongitude)
+//        copy.setLatitude(foundLatitude)
+//        copy.setLongitude(foundLongitude)
+        return copy
     }
 }

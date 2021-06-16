@@ -26,4 +26,7 @@ interface PokemonDao {
 
     @Query("SELECT * FROM pokemon_table WHERE pokemon_id=:pokemonId")
     fun getSpecificPokemon(pokemonId: Int): LiveData<PokemonEntity>
+
+    @Query("SELECT * FROM pokemon_table WHERE name =:name")
+    fun getPokemonByName(name: String): LiveData<PokemonEntity>
 }

@@ -35,7 +35,6 @@ abstract class PokemonDatabase : RoomDatabase() {
                     context.applicationContext,
                     PokemonDatabase::class.java,
                     dbName)
-//                    .addTypeConverter(CustomTypeConverters::class)
                     .build()
                 INSTANCE = instance
                 return instance

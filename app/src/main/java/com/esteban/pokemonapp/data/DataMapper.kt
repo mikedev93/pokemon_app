@@ -1,10 +1,7 @@
 package com.esteban.pokemonapp.data
 
 import com.esteban.pokemonapp.data.captured.CapturedEntity
-import com.esteban.pokemonapp.data.model.CapturedResponse
-import com.esteban.pokemonapp.data.model.MyTeamResponse
-import com.esteban.pokemonapp.data.model.PokemonResponse
-import com.esteban.pokemonapp.data.model.TokenResponse
+import com.esteban.pokemonapp.data.model.*
 import com.esteban.pokemonapp.data.pokemon.Move
 import com.esteban.pokemonapp.data.pokemon.PokemonCommon
 import com.esteban.pokemonapp.data.pokemon.PokemonEntity
@@ -90,6 +87,17 @@ class DataMapper {
                 myTeamEntity.capturedLatitudeAt,
                 myTeamEntity.capturedLongitudeAt,
                 myTeamEntity.pokemonDetails
+            )
+        }
+
+        fun pokemonResponseToPokemonCommon(pokemonResults: PokemonResults, pokemonEntity: PokemonEntity): PokemonCommon {
+            return PokemonCommon(
+                pokemonEntity.id,
+                pokemonEntity.name,
+                "",
+                pokemonResults.spottedLatitudeAt,
+                pokemonResults.spottedLongitudeAt,
+                pokemonEntity
             )
         }
 

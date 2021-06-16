@@ -36,6 +36,19 @@ abstract class BaseViewModel (application: Application): AndroidViewModel(applic
         return pokemonRepository.getPokemonFromDB(id)
     }
 
+    fun getPokemonFromDBByName(name: String): LiveData<PokemonEntity> {
+        Log.d(TAG, "getPokemonFromDB: fetching bd pokemon")
+        return pokemonRepository.getPokemonFromDBByName(name)
+    }
+
+    fun getPokemonFromServerByName(name: String){
+        Log.d(TAG, "getPokemonFromServer: fetching pokemon")
+        pokemonRepository.getPokemonFromServerByName(name)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { it -> pokemonLiveData.value = it }
+    }
+
     fun getPokemonFromServer(id: Int){
         Log.d(TAG, "getPokemonFromServer: fetching pokemon")
         pokemonRepository.getPokemonFromServer(id)

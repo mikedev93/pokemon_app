@@ -1,31 +1,43 @@
 package com.esteban.pokemonapp.ui.detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.esteban.pokemonapp.R
 import com.esteban.pokemonapp.adapters.MovesRecyclerAdapter
 import com.esteban.pokemonapp.data.Constants
+import com.esteban.pokemonapp.data.DataMapper
 import com.esteban.pokemonapp.data.community.Community
+import com.esteban.pokemonapp.data.model.PokemonResponse
+import com.esteban.pokemonapp.data.model.PokemonResults
 import com.esteban.pokemonapp.data.pokemon.Move
 import com.esteban.pokemonapp.data.pokemon.PokemonCommon
 import com.esteban.pokemonapp.data.pokemon.PokemonEntity
+import com.esteban.pokemonapp.ui.home.community.CommunityFragment
 import com.esteban.pokemonapp.utilities.AppBarStateChangedListener
+import com.esteban.pokemonapp.viewmodels.ExploreViewModel
 import com.google.android.material.appbar.AppBarLayout
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.layout_scrollable_content.*
-import java.lang.Exception
+import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
 
+    private val TAG = DetailActivity::class.java.simpleName
     private val PERCENTAGE_TO_SHOW_IMAGE = 20
     private var mMaxScrollSize = 0
     private var mIsImageHidden = false
+    lateinit var viewModel: ExploreViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,10 +45,24 @@ class DetailActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         val bundle = intent.getBundleExtra(Constants.POKEMON_BUNDLE)
         if (bundle != null) {
+            viewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(application!!)).get(ExploreViewModel::class.java)
             when(bundle.getString(Constants.DETAIL_ORIGIN)) {
                 Constants.WILD -> {
-//                    var captured = bundle.getParcelable<CapturedEntity>(Constants.POKEMON)
-                    setupWildView()
+                    var pokemonResult = bundle.getParcelable<PokemonResults>(Constants.POKEMON)
+                    viewModel.getPokemonFromDBByName(pokemonResult?.name!!).observe(this,
+                        Observer<PokemonEntity> { pokemon ->
+                            if (pokemon == null) {
+                                lifecycleScope.launch {
+                                    Log.d(TAG, "No pokemon on DB: fetching new data")
+                                    viewModel.getPokemonFromServerByName(pokemonResult?.name!!)
+                                }
+                            } else {
+                                Log.d(TAG, "Data found: loading data")
+                                setupWildView(DataMapper.pokemonResponseToPokemonCommon(pokemonResult, pokemon))
+                            }
+                        }
+                    )
+                    viewModel.getPokemonByName(pokemonResult?.name!!)
                 }
                 Constants.CAPTURED_BY_OTHER -> {
                     var community = bundle.getParcelable<Community>(Constants.POKEMON)
@@ -47,11 +73,26 @@ class DetailActivity : AppCompatActivity() {
                     setupCapturedView(captured)
                 }
             }
+            observe()
         }
     }
 
-    private fun setupWildView() {
+    private fun observe(){
+        viewModel.getPokemonByName().observe(this,
+            Observer<PokemonResponse> { it ->
+                lifecycleScope.launch {
+                    viewModel.savePokemonToDB(DataMapper.pokemonResponseToEntity(it))
+                }
+            })
+    }
 
+    private fun setupWildView(pokemon: PokemonCommon) {
+        setupToolbar(pokemon?.name!!, pokemon.pokemonDetails?.sprites?.frontDefault!!)
+        textview_captured_at.text = pokemon.capturedAt
+        setupTypes(pokemon.pokemonDetails!!)
+        setupMoves(pokemon.pokemonDetails?.moves!!)
+        button_capture.visibility = View.VISIBLE
+        linear_captured_info.visibility = View.GONE
     }
 
     private fun setupCapturedView(pokemon: PokemonCommon?) {
@@ -84,7 +125,6 @@ class DetailActivity : AppCompatActivity() {
     private fun setupCapturedByOtherView(community: Community?) {
         setupToolbar(community?.pokemon?.name!!, community.pokemon.pokemonDetails?.sprites?.frontDefault!!)
         setupTrainer(community.name)
-        //TODO: formatear fecha
         textview_captured_at.text = community.pokemon.capturedAt
         setupTypes(community.pokemon.pokemonDetails!!)
         setupMoves(community.pokemon.pokemonDetails?.moves!!)
@@ -121,7 +161,7 @@ class DetailActivity : AppCompatActivity() {
     private fun setupToolbar(pokemonName: String, imageUrl: String) {
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(false)
-        collapsing_toolbar.title = pokemonName
+        collapsing_toolbar.title = pokemonName.toLowerCase().capitalize()
         Glide.with(this)
             .load(imageUrl)
             .diskCacheStrategy(DiskCacheStrategy.ALL)

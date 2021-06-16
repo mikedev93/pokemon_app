@@ -33,13 +33,14 @@ import kotlinx.coroutines.launch
 class HomeFragment : Fragment() {
 
     lateinit var viewModel: HomeFragmentViewModel
+    lateinit var homeActivity: HomeActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-
+        homeActivity = activity as HomeActivity
         viewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(activity?.application!!)).get(HomeFragmentViewModel::class.java)
 
         val fragmentList = arrayListOf<Fragment>(
@@ -95,7 +96,7 @@ class HomeFragment : Fragment() {
                         viewModel.getTokenFromServer()
                     }
                 } else {
-                    Toast.makeText(context, "Token available", Toast.LENGTH_SHORT).show();
+                    homeActivity.hideLoading()
                     SessionManager.tokenEntity = tokenEntity
                 }
             }
